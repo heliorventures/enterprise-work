@@ -1,0 +1,372 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum WorkPriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum WorkStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  ON_HOLD
+  BLOCKED
+  IN_REVIEW
+  COMPLETED
+  CANCELLED
+}
+
+enum OutcomeStatus {
+  PENDING
+  ACHIEVED
+  PARTIALLY_ACHIEVED
+  NOT_ACHIEVED
+}
+
+enum WorkloadLevel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+model Role {
+  id          String           @id @default(uuid())
+  name        String           @unique
+  description String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  users       User[]
+  permissions RolePermission[]
+}
+
+model Permission {
+  id          String           @id @default(uuid())
+  code        String           @unique
+  description String?
+  createdAt   DateTime         @default(now())
+  roles       RolePermission[]
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+}
+
+model Department {
+  id          String     @id @default(uuid())
+  name        String     @unique
+  description String?
+  headId      String?
+  head        User?      @relation("DepartmentHead", fields: [headId], references: [id], onDelete: SetNull)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  teams       Team[]
+  users       User[]     @relation("UserDepartment")
+  processes   Process[]
+  workItems   WorkItem[]
+}
+
+model Team {
+  id           String       @id @default(uuid())
+  name         String
+  description  String?
+  departmentId String
+  department   Department   @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+  leadId       String?
+  lead         User?        @relation("TeamLead", fields: [leadId], references: [id], onDelete: SetNull)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  members      User[]       @relation("UserTeam")
+  workItems    WorkItem[]
+
+  @@unique([departmentId, name])
+  @@index([departmentId])
+}
+
+model User {
+  id            String     @id @default(uuid())
+  employeeId    String     @unique
+  firstName     String
+  lastName      String
+  email         String     @unique
+  passwordHash  String
+  roleId        String
+  role          Role       @relation(fields: [roleId], references: [id])
+  departmentId  String?
+  department    Department? @relation("UserDepartment", fields: [departmentId], references: [id], onDelete: SetNull)
+  teamId        String?
+  team          Team?      @relation("UserTeam", fields: [teamId], references: [id], onDelete: SetNull)
+  managerId     String?
+  manager       User?      @relation("UserManager", fields: [managerId], references: [id], onDelete: SetNull)
+  reports       User[]     @relation("UserManager")
+  status        UserStatus @default(ACTIVE)
+  profileImage  String?
+  lastLoginAt   DateTime?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  headedDepartments Department[] @relation("DepartmentHead")
+  ledTeams          Team[]       @relation("TeamLead")
+  ownedProcesses    Process[]    @relation("ProcessOwner")
+  createdWorkItems  WorkItem[]   @relation("WorkCreatedBy")
+  assignedWorkItems WorkItem[]   @relation("WorkAssignedTo")
+  managedWorkItems  WorkItem[]   @relation("WorkManager")
+  createdTasks      Task[]       @relation("TaskCreatedBy")
+  assignedTasks     Task[]       @relation("TaskAssignedTo")
+  reviewedOutcomes  Outcome[]    @relation("OutcomeReviewer")
+  uploadedDocuments Document[]
+  comments          Comment[]
+  notifications     Notification[]
+  auditLogs         AuditLog[]
+  refreshTokens     RefreshToken[]
+  passwordResets    PasswordReset[]
+  savedFilters      SavedFilter[]
+
+  @@index([departmentId])
+  @@index([teamId])
+  @@index([managerId])
+  @@index([roleId])
+  @@index([email])
+}
+
+model Process {
+  id           String     @id @default(uuid())
+  departmentId String?
+  department   Department? @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+  name         String
+  description  String?
+  ownerId      String?
+  owner        User?      @relation("ProcessOwner", fields: [ownerId], references: [id], onDelete: SetNull)
+  active       Boolean    @default(true)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  workItems    WorkItem[]
+
+  @@index([departmentId])
+  @@index([ownerId])
+}
+
+model WorkItem {
+  id               String         @id @default(uuid())
+  processId        String
+  process          Process        @relation(fields: [processId], references: [id])
+  departmentId     String?
+  department       Department?    @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+  teamId           String?
+  team             Team?          @relation(fields: [teamId], references: [id], onDelete: SetNull)
+  title            String
+  description      String?
+  createdById      String
+  createdBy        User           @relation("WorkCreatedBy", fields: [createdById], references: [id])
+  assignedToId     String?
+  assignedTo       User?          @relation("WorkAssignedTo", fields: [assignedToId], references: [id], onDelete: SetNull)
+  managerId        String?
+  manager          User?          @relation("WorkManager", fields: [managerId], references: [id], onDelete: SetNull)
+  priority         WorkPriority   @default(MEDIUM)
+  status           WorkStatus     @default(NOT_STARTED)
+  startDate        DateTime?
+  dueDate          DateTime?
+  completedDate    DateTime?
+  expectedOutcome  String?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  tasks            Task[]
+  outcome          Outcome?
+  documents        Document[]
+  comments         Comment[]
+  notifications    Notification[]
+
+  @@index([processId])
+  @@index([departmentId])
+  @@index([teamId])
+  @@index([assignedToId])
+  @@index([managerId])
+  @@index([status])
+  @@index([priority])
+  @@index([dueDate])
+  @@index([createdAt])
+  @@index([title])
+}
+
+model Task {
+  id            String       @id @default(uuid())
+  workItemId    String
+  workItem      WorkItem     @relation(fields: [workItemId], references: [id], onDelete: Cascade)
+  parentTaskId  String?
+  parentTask    Task?        @relation("Subtasks", fields: [parentTaskId], references: [id], onDelete: Cascade)
+  subtasks      Task[]       @relation("Subtasks")
+  title         String
+  description   String?
+  assignedToId  String?
+  assignedTo    User?        @relation("TaskAssignedTo", fields: [assignedToId], references: [id], onDelete: SetNull)
+  status        WorkStatus   @default(NOT_STARTED)
+  priority      WorkPriority @default(MEDIUM)
+  startDate     DateTime?
+  dueDate       DateTime?
+  completedDate DateTime?
+  createdById   String
+  createdBy     User         @relation("TaskCreatedBy", fields: [createdById], references: [id])
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  documents     Document[]
+
+  @@index([workItemId])
+  @@index([parentTaskId])
+  @@index([assignedToId])
+  @@index([status])
+}
+
+model Outcome {
+  id           String        @id @default(uuid())
+  workItemId   String        @unique
+  workItem     WorkItem      @relation(fields: [workItemId], references: [id], onDelete: Cascade)
+  expected     String
+  actual       String?
+  status       OutcomeStatus @default(PENDING)
+  reviewedById String?
+  reviewedBy   User?         @relation("OutcomeReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+  reviewedAt   DateTime?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Document {
+  id          String    @id @default(uuid())
+  workItemId  String?
+  workItem    WorkItem? @relation(fields: [workItemId], references: [id], onDelete: Cascade)
+  taskId      String?
+  task        Task?     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  fileName    String
+  fileType    String
+  fileSize    Int
+  storagePath String
+  uploadedById String
+  uploadedBy  User      @relation(fields: [uploadedById], references: [id])
+  uploadedAt  DateTime  @default(now())
+  version     Int       @default(1)
+  description String?
+
+  @@index([workItemId])
+  @@index([taskId])
+  @@index([uploadedById])
+}
+
+model Comment {
+  id         String   @id @default(uuid())
+  workItemId String
+  workItem   WorkItem @relation(fields: [workItemId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  message    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([workItemId])
+  @@index([createdAt])
+}
+
+model AuditLog {
+  id          String   @id @default(uuid())
+  entityType  String
+  entityId    String
+  action      String
+  oldValue    Json?
+  newValue    Json?
+  performedById String?
+  performedBy User?    @relation(fields: [performedById], references: [id], onDelete: SetNull)
+  timestamp   DateTime @default(now())
+
+  @@index([entityType, entityId])
+  @@index([performedById])
+  @@index([timestamp])
+}
+
+model Notification {
+  id         String    @id @default(uuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title      String
+  message    String
+  type       String
+  workItemId String?
+  workItem   WorkItem? @relation(fields: [workItemId], references: [id], onDelete: SetNull)
+  read       Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+
+  @@index([userId, read])
+  @@index([createdAt])
+}
+
+model RefreshToken {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+}
+
+model PasswordReset {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+}
+
+model SavedFilter {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  entity    String
+  filters   Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, entity])
+}
+
+model AppSetting {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     Json
+  updatedAt DateTime @updatedAt
+}
+
+model WorkStatusDefinition {
+  id        String  @id @default(uuid())
+  code      String  @unique
+  label     String
+  color     String
+  sortOrder Int
+  isDefault Boolean @default(false)
+  isFinal   Boolean @default(false)
+  entity    String  @default("WORK_ITEM")
+}

@@ -1,0 +1,21 @@
+html,
+body,
+#root {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: rgba(201, 132, 42, 0.28);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(27, 63, 107, 0.28) transparent;
+}

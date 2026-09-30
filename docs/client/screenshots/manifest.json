@@ -1,0 +1,72 @@
+[
+  {
+    "file": "01-login.png",
+    "label": "Sign in",
+    "url": "http://localhost:5173/login"
+  },
+  {
+    "file": "02-home.png",
+    "label": "Home dashboard",
+    "url": "http://localhost:5173/"
+  },
+  {
+    "file": "03-my-work.png",
+    "label": "My work",
+    "url": "http://localhost:5173/my-work"
+  },
+  {
+    "file": "04-my-work-kanban.png",
+    "label": "My work — board",
+    "url": "http://localhost:5173/my-work"
+  },
+  {
+    "file": "05-all-work.png",
+    "label": "All work",
+    "url": "http://localhost:5173/work"
+  },
+  {
+    "file": "06-work-detail.png",
+    "label": "Work item detail",
+    "url": "http://localhost:5173/work/1680c987-3b2f-41ce-a179-91c26d340a23"
+  },
+  {
+    "file": "07-new-work.png",
+    "label": "Create work",
+    "url": "http://localhost:5173/work/new"
+  },
+  {
+    "file": "08-processes.png",
+    "label": "Processes",
+    "url": "http://localhost:5173/processes"
+  },
+  {
+    "file": "09-process-detail.png",
+    "label": "Process detail",
+    "url": "http://localhost:5173/processes/2f3572ca-5c89-4ba3-8fc4-c598a9fd6ba7"
+  },
+  {
+    "file": "10-people.png",
+    "label": "People and workload",
+    "url": "http://localhost:5173/resources"
+  },
+  {
+    "file": "11-documents.png",
+    "label": "Documents",
+    "url": "http://localhost:5173/documents"
+  },
+  {
+    "file": "12-reports.png",
+    "label": "Reports",
+    "url": "http://localhost:5173/reports"
+  },
+  {
+    "file": "13-alerts.png",
+    "label": "Alerts",
+    "url": "http://localhost:5173/notifications"
+  },
+  {
+    "file": "14-users.png",
+    "label": "Users",
+    "url": "http://localhost:5173/admin/users"
+  }
+]

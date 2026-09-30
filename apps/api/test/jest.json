@@ -1,0 +1,13 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": "..",
+  "roots": ["<rootDir>/src"],
+  "testRegex": ".*\\.spec\\.ts$",
+  "transform": { "^.+\\.ts$": "ts-jest" },
+  "collectCoverageFrom": ["src/**/*.ts"],
+  "coverageDirectory": "./coverage",
+  "testEnvironment": "node",
+  "moduleNameMapper": {
+    "^@wmp/types$": "<rootDir>/../../packages/types/src"
+  }
+}

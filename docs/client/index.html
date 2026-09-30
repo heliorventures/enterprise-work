@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Solvian Group — Digital Command Centre | Product walkthrough</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --navy: #1b3f6b;
+        --ink: #162033;
+        --muted: #5b6575;
+        --gold: #c9842a;
+        --paper: #fffefb;
+        --sand: #f3f0ea;
+        --line: rgba(27, 63, 107, 0.12);
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+        color: var(--ink);
+        background: var(--sand);
+        line-height: 1.6;
+      }
+      .wrap { max-width: 980px; margin: 0 auto; padding: 32px 20px 80px; }
+      header.hero {
+        background: linear-gradient(165deg, #10263f 0%, #1b3f6b 55%, #0f2a44 100%);
+        color: #f8f4ec;
+        border-radius: 24px;
+        padding: 48px 40px;
+        margin-bottom: 36px;
+      }
+      header.hero p.kicker {
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        font-size: 12px;
+        font-weight: 700;
+        color: #e8b056;
+        margin: 0 0 12px;
+      }
+      h1 { font-size: 40px; line-height: 1.15; letter-spacing: -0.03em; margin: 0 0 12px; }
+      h2 { font-size: 26px; letter-spacing: -0.02em; margin: 48px 0 12px; color: var(--navy); }
+      h3 { font-size: 18px; margin: 28px 0 8px; }
+      p.lead { font-size: 18px; opacity: 0.88; max-width: 640px; }
+      .meta { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 28px; font-size: 13px; opacity: 0.75; }
+      nav.toc {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 20px 24px;
+        margin-bottom: 28px;
+      }
+      nav.toc ol { margin: 8px 0 0; padding-left: 20px; }
+      nav.toc a { color: var(--navy); text-decoration: none; }
+      nav.toc a:hover { text-decoration: underline; }
+      .card {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 22px 24px;
+        margin: 16px 0;
+      }
+      .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+      .shot {
+        margin: 16px 0 8px;
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 12px 30px rgba(22, 32, 51, 0.06);
+      }
+      .shot img { width: 100%; display: block; }
+      .caption { font-size: 13px; color: var(--muted); margin: 0 0 28px; }
+      table { width: 100%; border-collapse: collapse; font-size: 14px; }
+      th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+      th { color: var(--muted); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; }
+      ul { padding-left: 18px; }
+      footer { margin-top: 48px; color: var(--muted); font-size: 13px; }
+      @media (max-width: 720px) {
+        header.hero { padding: 32px 22px; }
+        h1 { font-size: 30px; }
+        .grid { grid-template-columns: 1fr; }
+      }
+      @media print {
+        body { background: white; }
+        header.hero { break-after: avoid; }
+        .shot { break-inside: avoid; box-shadow: none; }
+        nav.toc { break-after: avoid; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="hero">
+        <p class="kicker">Solvian Group · Confidential preview</p>
+        <h1>Digital Command Centre</h1>
+        <p class="lead">
+          A walkthrough of the working product: who is doing the work, which process it belongs to,
+          the current status, the documents, and the outcome.
+        </p>
+        <div class="meta">
+          <span>Prepared 29 September 2026</span>
+          <span>Phase 1 preview</span>
+          <span>Screens captured from the live application</span>
+        </div>
+      </header>
+
+      <nav class="toc">
+        <strong>Contents</strong>
+        <ol>
+          <li><a href="#purpose">What this platform is</a></li>
+          <li><a href="#who">Who it is for</a></li>
+          <li><a href="#model">How work is organised</a></li>
+          <li><a href="#screens">Screen-by-screen tour</a></li>
+          <li><a href="#access">Preview access</a></li>
+          <li><a href="#scope">What is in this preview</a></li>
+        </ol>
+      </nav>
+
+      <h2 id="purpose">What this platform is</h2>
+      <p>
+        The Digital Command Centre is Solvian Group’s internal work and outcome system.
+        It is built so leadership can answer four questions without a status call:
+      </p>
+      <div class="grid">
+        <div class="card"><strong>What work exists?</strong><br />Leads, projects, tenders, reviews and support requests in one place.</div>
+        <div class="card"><strong>Who owns it?</strong><br />Named people, verticals and teams — not a shared inbox.</div>
+        <div class="card"><strong>Which process?</strong><br />Pipeline, execution, bidding, finance, documents, KPIs and more.</div>
+        <div class="card"><strong>What was the outcome?</strong><br />Expected result, documents, blockers and the final status stay on the work.</div>
+      </div>
+      <p>
+        This preview is loaded with Solvian’s nine verticals and the named leaders from the
+        Command Centre requirements. Sample work is representative of Phase 1 — not a live production extract.
+      </p>
+
+      <h2 id="who">Who it is for</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Audience</th>
+            <th>What they see first</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Group Leadership, Admin</td>
+            <td>Home dashboard — active, overdue, blocked, people load and outcomes across verticals.</td>
+          </tr>
+          <tr>
+            <td>Vertical / operating CEOs and department heads</td>
+            <td>Team dashboard — workload, pending reviews and recent activity.</td>
+          </tr>
+          <tr>
+            <td>Project managers and employees</td>
+            <td>My work — today, upcoming, overdue and blocked items assigned to them.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="model">How work is organised</h2>
+      <p>The product follows the client model: <strong>people → work → process → tasks → documents → outcome</strong>.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Object</th>
+            <th>Meaning in Solvian terms</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Department</td>
+            <td>A vertical — Arica, SIPL, Biorefineries, Consultancy, Ideamint, Myara, Arica Tech Security, Stargold, Futuristics Mobility — plus Group Office.</td>
+          </tr>
+          <tr>
+            <td>Work item</td>
+            <td>The project of work: a lead, a live project, a bid, a funding request, a legal pack.</td>
+          </tr>
+          <tr>
+            <td>Process</td>
+            <td>The shared flow it belongs to (pipeline, execution, tender, finance, documents, KPI, and so on).</td>
+          </tr>
+          <tr>
+            <td>Task</td>
+            <td>A smaller step inside that work item.</td>
+          </tr>
+          <tr>
+            <td>Document / comment / outcome</td>
+            <td>Evidence, discussion and whether the expected result was achieved.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="screens">Screen-by-screen tour</h2>
+
+      <h3>1. Sign in</h3>
+      <p>
+        People sign in with their work email. The left panel states the purpose of the Command Centre.
+        Preview accounts are listed under “Demo accounts”.
+      </p>
+      <figure class="shot">
+        <img src="screenshots/01-login.png" alt="Sign-in screen of the Digital Command Centre" />
+      </figure>
+      <p class="caption">Sign in — Solvian Digital Command Centre</p>
+
+      <h3>2. Home</h3>
+      <p>
+        Group Leadership lands on Home. Numbers are clickable. Overdue and blocked work sit beside
+        workload by person so Vinay (or any VP) can see where attention is needed.
+      </p>
+      <figure class="shot">
+        <img src="screenshots/02-home.png" alt="Executive home dashboard with KPIs, charts and overdue work" />
+      </figure>
+      <p class="caption">Home for Group Leadership — live preview data</p>
+
+      <h3>3. My work</h3>
+      <p>
+        Each person sees only what is assigned to them, grouped as Today, Upcoming, Overdue, Blocked
+        and Completed. A board view is one click away.
+      </p>
+      <figure class="shot">
+        <img src="screenshots/03-my-work.png" alt="My work list grouped by today, upcoming, overdue and blocked" />
+      </figure>
+      <p class="caption">My work — list</p>
+      <figure class="shot">
+        <img src="screenshots/04-my-work-kanban.png" alt="My work kanban board by status" />
+      </figure>
+      <p class="caption">My work — board</p>
+
+      <h3>4. All work</h3>
+      <p>
+        The group list answers “who is doing what”. Filter by vertical, process, status or priority.
+        Status can be changed in the row. Export is available for leadership packs.
+      </p>
+      <figure class="shot">
+        <img src="screenshots/05-all-work.png" alt="All work table with Solvian projects and owners" />
+      </figure>
+      <p class="caption">All work — SIPL, Arica, Myara, Group Office and other verticals</p>
+
+      <h3>5. A single work item</h3>
+      <p>
+        Opening a row shows the owner, process, dates, description, then tabs for tasks, documents,
+        outcome, comments and activity. This is the record leadership can trust without chasing email.
+      </p>
+      <figure class="shot">
+        <img src="screenshots/06-work-detail.png" alt="SIPL infrastructure package work item detail" />
+      </figure>
+      <p class="caption">Work detail — SIPL infrastructure package</p>
+
+      <h3>6. Creating work</h3>
+      <p>
+        <strong>New work</strong> in the header starts a work item: title, process, vertical, owner,
+        dates, expected outcome, and optional first tasks.
+      </p>
+      <figure class="shot">
+        <img src="screenshots/07-new-work.png" alt="Form to create a new work item" />
+      </figure>
+      <p class="caption">Create work</p>
+
+      <h3>7. Processes</h3>
+      <p>
+        Phase 1 processes from the requirements are already on the platform: pipeline, project execution,
+        bidding, documents, finance, internal support, KPIs, and risk.
+      </p>
+      <figure class="shot">
+        <img src="screenshots/08-processes.png" alt="Process cards including pipeline, execution, bidding and finance" />
+      </figure>
+      <p class="caption">Processes</p>
+      <figure class="shot">
+        <img src="screenshots/09-process-detail.png" alt="Process detail with volume and status metrics" />
+      </figure>
+      <p class="caption">Process detail — volume and status</p>
+
+      <h3>8. People</h3>
+      <p>Workload by person: active, completed, overdue and high-priority counts, so overload is visible.</p>
+      <figure class="shot">
+        <img src="screenshots/10-people.png" alt="People and workload table" />
+      </figure>
+      <p class="caption">People and workload</p>
+
+      <h3>9. Documents, reports and alerts</h3>
+      <p>
+        Documents stay attached to work. Reports give leadership summaries and export.
+        Alerts surface overdue, blocked and review items.
+      </p>
+      <figure class="shot">
+        <img src="screenshots/11-documents.png" alt="Documents register" />
+      </figure>
+      <p class="caption">Documents</p>
+      <figure class="shot">
+        <img src="screenshots/12-reports.png" alt="Reports screen with work summary" />
+      </figure>
+      <p class="caption">Reports</p>
+      <figure class="shot">
+        <img src="screenshots/13-alerts.png" alt="Alerts list" />
+      </figure>
+      <p class="caption">Alerts</p>
+
+      <h3>10. Users</h3>
+      <p>
+        Named Solvian leaders are already set up as users, with roles and verticals.
+        Admins can add more people without a developer.
+      </p>
+      <figure class="shot">
+        <img src="screenshots/14-users.png" alt="Users directory with Solvian leaders" />
+      </figure>
+      <p class="caption">Users — preview directory</p>
+
+      <h2 id="access">Preview access</h2>
+      <p>All preview accounts use the same password: <strong>Welcome123!</strong></p>
+      <table>
+        <thead>
+          <tr>
+            <th>Role</th>
+            <th>Sign in as</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Group Leadership</td>
+            <td>vinay.phadnis@solvian.local</td>
+          </tr>
+          <tr>
+            <td>Vertical CEO (Arica)</td>
+            <td>sahil.phadnis@solvian.local</td>
+          </tr>
+          <tr>
+            <td>Operating CEO (SIPL)</td>
+            <td>uday.kulkarni@solvian.local</td>
+          </tr>
+          <tr>
+            <td>Project manager</td>
+            <td>kunal.dhonge@solvian.local</td>
+          </tr>
+          <tr>
+            <td>Admin</td>
+            <td>admin@solvian.local</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>The live preview is at <strong>http://localhost:5173</strong> on the machine running the application.</p>
+
+      <h2 id="scope">What is in this preview</h2>
+      <div class="card">
+        <ul>
+          <li>Nine verticals plus Group Office, with named leaders as users.</li>
+          <li>Phase 1 processes: lead pipeline, project execution, bidding, documents, finance, support, KPIs, risk.</li>
+          <li>Representative work (Arica, SIPL, biorefinery, consultancy, Ideamint, Myara, security, Stargold, Command Centre MVP).</li>
+          <li>Roles and permissions (Leadership, department head, manager, employee, admin).</li>
+          <li>Search, alerts, comments, document metadata, reports and export.</li>
+        </ul>
+        <p style="margin-bottom: 0">
+          <strong>Not yet live production data.</strong> Real project rows from Solvian systems can replace
+          the sample work once the client confirms the model.
+        </p>
+      </div>
+
+      <footer>
+        Solvian Group · Digital Command Centre · Product walkthrough · For internal client review
+      </footer>
+    </div>
+  </body>
+</html>

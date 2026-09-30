@@ -1,0 +1,15 @@
+node_modules
+dist
+build
+coverage
+.env
+.env.local
+*.log
+uploads/*
+!uploads/.gitkeep
+apps/api/uploads/**
+.DS_Store
+.idea
+.vscode
+*.tsbuildinfo
+apps/web/.vite
